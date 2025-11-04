@@ -14,7 +14,7 @@ Before you begin, ensure you have the following installed:
 
 1.  **Clone the repository:**
     ```sh
-    git clone <repository-url>
+    git clone https://github.com/iPanda64/multithread-benchmark
     ```
 
 2.  **Build the C++ backend:**
@@ -51,7 +51,7 @@ Before you begin, ensure you have the following installed:
 
 1.  **Clone the repository:**
     ```sh
-    git clone <repository-url>
+    git clone https://github.com/iPanda64/multithread-benchmark
     ```
 
 2.  **Build the C++ backend:**
