@@ -1,0 +1,26 @@
+# C++ build artifacts
+build/
+*.obj
+*.exe
+
+# Java build artifacts
+java_src/out/
+*.class
+
+# Python virtual environment and cache
+py_src/myenv/
+__pycache__/
+*.pyc
+
+# IDE project files (IntelliJ)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
