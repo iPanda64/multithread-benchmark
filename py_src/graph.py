@@ -15,5 +15,5 @@ with open("../build/output.json", "r") as f:
     fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(20, 8))
     df.plot(kind="bar", ax=axes[0], x="thread_index", y="elapsed_sec")
     df.plot(kind="bar", ax=axes[1], x="thread_index", y="elapsed_cycles")
-    axes[1].get_yaxis().get_major_formatter().set_scientific(False)
+    # axes[1].get_yaxis().get_major_formatter().set_scientific(False)
     plt.show()

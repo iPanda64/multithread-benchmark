@@ -18,9 +18,9 @@ int main(int argc, char *argv[]) {
   print_options(options);
 
   int measurement_type = 0;
-  if (strcmp(options.timer_type, "rdtsc"))
+  if (strcmp(options.timer_type, "rdtsc") == 0)
     measurement_type = RDTSC_MEASUREMENT;
-  else if (strcmp(options.timer_type, "clock"))
+  else if (strcmp(options.timer_type, "clock") == 0)
     measurement_type = CLOCK_MEASUREMENT;
   else {
     printf("Timer incorectly defined. Using clock().\n");
@@ -31,13 +31,13 @@ int main(int argc, char *argv[]) {
   if (options.enable_io) {
     result = start_execution(IO, options.thread_count, 10, measurement_type);
   } else {
-    if (strcmp(options.algorithm, "mergersort"))
+    if (strcmp(options.algorithm, "sorting") == 0)
       result =
           start_execution(SORT, options.thread_count, 10, measurement_type);
-    else if (strcmp(options.algorithm, "matrix"))
+    else if (strcmp(options.algorithm, "matrix") == 0)
       result =
           start_execution(MATRIX, options.thread_count, 10, measurement_type);
-    else if (strcmp(options.algorithm, "prime"))
+    else if (strcmp(options.algorithm, "prime") == 0)
       result =
           start_execution(PRIME, options.thread_count, 10, measurement_type);
     else {

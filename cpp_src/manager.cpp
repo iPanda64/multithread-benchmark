@@ -185,7 +185,7 @@ all_MeasuredInfo prime_execution(int num_threads,
 
 all_MeasuredInfo matrix_execution(int num_threads,
                                   int measurement_type = CLOCK_MEASUREMENT) {
-  const int m = num_threads, n = 3000, p = 4000;
+  const int m = num_threads, n = 3000 / num_threads, p = 4000;
   unsigned int *matrix_a = (unsigned int *)malloc(m * n * sizeof(unsigned int));
   if (matrix_a == NULL)
     exit(1);
