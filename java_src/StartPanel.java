@@ -13,6 +13,7 @@ public class StartPanel extends JPanel {
     private JLabel jcomp7;
     private JLabel jcomp8;
     private JButton start;
+    private JButton help;
     private static JFrame frame;
     public StartPanel() {
         String[] algorithmInputItems = {"Sorting", "Prime", "Matrix"};
@@ -51,7 +52,16 @@ public class StartPanel extends JPanel {
                 frame.setVisible (true);
             }
         });
-
+        help = new JButton("Help");
+        help.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add (new HelpPanel());
+                frame.pack();
+                frame.setVisible (true);
+            }
+        });
         setPreferredSize (new Dimension (263, 229));
         setLayout (null);
 
@@ -64,6 +74,7 @@ public class StartPanel extends JPanel {
         add (jcomp7);
         add (jcomp8);
         add (start);
+        add (help);
 
         ioInput.setBounds (145, 40, 100, 25);
         algorithmInput.setBounds (150, 5, 100, 25);
@@ -73,7 +84,8 @@ public class StartPanel extends JPanel {
         jcomp6.setBounds (15, 40, 115, 25);
         jcomp7.setBounds (15, 75, 120, 25);
         jcomp8.setBounds (15, 115, 100, 25);
-        start.setBounds (65, 175, 135, 25);
+        start.setBounds (15, 175, 130, 25);
+        help.setBounds (165, 175, 85, 25);
     }
 
 

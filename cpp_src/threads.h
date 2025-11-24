@@ -51,6 +51,5 @@ DWORD WINAPI PrimeThreadFunction(LPVOID lpParam);
 DWORD WINAPI SortThreadFunction(LPVOID lpParam);
 
 void start_timer(int measurement_type, MeasurementState *state);
-MeasuredInfo end_timer(int measurement_type, MeasurementState *state,
-                       int thread_index);
+MeasuredInfo end_timer(int measurement_type, MeasurementState *state, int thread_index);
 #endif

@@ -25,13 +25,6 @@ void measurement_state_init(MeasurementState *state) {
 
 // clock_t start, end;
 
-void f() {
-  int s = 1;
-  for (int i = 0; i < 1000000; ++i) { // Increased from 1000 to 1,000,000
-    s += i;
-  }
-}
-
 void rdtsc_start(MeasurementState *state) {
   if (!state)
     return;
@@ -48,7 +41,8 @@ void rdtsc_start(MeasurementState *state) {
 		popad
   }
   __asm {
-    ; write the assembly instructions to be measured cpuid rdtsc
+    ;
+    write the assembly instructions to be measured cpuid rdtsc
   }
 }
 
@@ -118,9 +112,9 @@ void compute_cpuid_overhead() {
   cycles_low1 = 0;
 }
 
-MeasuredInfo rdtsc_end(MeasurementState *state,int thread_index_result) {
+MeasuredInfo rdtsc_end(MeasurementState *state, int thread_index_result) {
   if (!state) {
-    MeasuredInfo invalid = {0, 0.0,INVALID_MEASUREMENT} ;
+    MeasuredInfo invalid = {0, 0.0, INVALID_MEASUREMENT};
     return invalid;
   }
 
@@ -148,10 +142,10 @@ MeasuredInfo rdtsc_end(MeasurementState *state,int thread_index_result) {
   printf("Cycles (after) = %llu\n", state->temp_cycles2);
   printf("Total cycles = %lld\n", state->total_cycles);
 
-  MeasuredInfo result = {0, 0.0,INVALID_MEASUREMENT};
+  MeasuredInfo result = {0, 0.0, INVALID_MEASUREMENT};
   result.elapsed_sec = elapsed_sec;
   result.elapsed_cycles = elapsed_cycles;
-  result.thread_index=thread_index_result;
+  result.thread_index = thread_index_result;
   return result;
 }
 
@@ -160,9 +154,9 @@ void clock_start(MeasurementState *state) {
     state->start = clock();
   }
 }
-MeasuredInfo clock_end(MeasurementState *state,int thread_index_result) {
+MeasuredInfo clock_end(MeasurementState *state, int thread_index_result) {
   if (!state) {
-    MeasuredInfo invalid = {0, 0.0,INVALID_MEASUREMENT};
+    MeasuredInfo invalid = {0, 0.0, INVALID_MEASUREMENT};
     return invalid;
   }
 
@@ -170,30 +164,9 @@ MeasuredInfo clock_end(MeasurementState *state,int thread_index_result) {
   double elapsed_sec = (double)(state->end - state->start) / CLOCKS_PER_SEC;
   long long elapsed_cycles = (long long)(elapsed_sec * FREQUENCY);
 
-  MeasuredInfo result = {0, 0.0,INVALID_MEASUREMENT};
+  MeasuredInfo result = {0, 0.0, INVALID_MEASUREMENT};
   result.elapsed_sec = elapsed_sec;
   result.elapsed_cycles = elapsed_cycles;
-  result.thread_index=thread_index_result;
+  result.thread_index = thread_index_result;
   return result;
 }
-
-// int main() {
-//   MeasurementState my_state;
-//   measurement_state_init(&my_state);
-//
-//   compute_cpuid_overhead();
-//
-//   rdtsc_start(&my_state);
-//   f();
-//   MeasuredInfo info = rdtsc_end(&my_state,1);
-//
-//   MeasurementState my_state2;
-//   measurement_state_init(&my_state2);
-//   clock_start(&my_state2);
-//   f();
-//   MeasuredInfo info2 = clock_end(&my_state2,2);
-//   printf("Measurement: %lld cycles\n", info2.elapsed_cycles);
-//   printf("Measurement: %f seconds\n", info2.elapsed_sec);
-//
-//   return 0;
-// }

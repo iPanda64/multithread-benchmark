@@ -30,6 +30,7 @@ void print_all_info(all_MeasuredInfo all_info) {
 void accumulate_measured_info(all_MeasuredInfo *accumulator,
                               all_MeasuredInfo new_info) {
   if (accumulator->array_size != new_info.array_size) {
+    printf("Error: Array sizes do not match in accumulate_measured_info.\n");
     exit(1);
   }
 
@@ -48,20 +49,26 @@ all_MeasuredInfo io_execution(int num_threads,
                               int measurement_type = CLOCK_MEASUREMENT) {
   int chunk_size = NUMBER_OF_FILES / num_threads;
   HANDLE *hThread = (HANDLE *)malloc(num_threads * sizeof(HANDLE));
-  if (hThread == NULL)
+  if (hThread == NULL) {
+    printf("Error: Memmory alocation of \"hThread\" failed\n");
     exit(1);
+  }
 
   IOData **pData = (IOData **)malloc(num_threads * sizeof(IOData *));
-  if (pData == NULL)
+  if (pData == NULL) {
+    printf("Error: Memmory alocation of \"pData\" failed\n");
     exit(1);
+  }
 
   MeasurementState globalState;
   start_timer(measurement_type, &globalState);
 
   for (int i = 0; i < num_threads; i++) {
     pData[i] = (IOData *)calloc(1, sizeof(IOData));
-    if (pData[i] == NULL)
+    if (pData[i] == NULL) {
+      printf("Error: Memmory alocation of \"pData[i]\" failed\n");
       exit(1);
+    }
     pData[i]->start_file_index = i * chunk_size + 1;
     if (i == num_threads - 1) {
       pData[i]->end_file_index = NUMBER_OF_FILES;
@@ -82,8 +89,10 @@ all_MeasuredInfo io_execution(int num_threads,
   all_info.array_size = num_threads;
   all_info.thread_info_array =
       (MeasuredInfo *)malloc(num_threads * sizeof(MeasuredInfo));
-  if (all_info.thread_info_array == NULL)
+  if (all_info.thread_info_array == NULL) {
+    printf("Error: Memmory alocation of \"all_info.thread_info_array\" failed\n");
     exit(1);
+  }
 
   for (int i = 0; i < num_threads; i++) {
     all_info.thread_info_array[i] = pData[i]->info;
@@ -102,16 +111,20 @@ all_MeasuredInfo prime_execution(int num_threads,
 
   unsigned int *array =
       (unsigned int *)malloc(sizeof(unsigned int) * array_size);
-  if (array == NULL)
+  if (array == NULL) {
+    printf("Error: Memmory alocation of \"array\" failed\n");
     exit(1);
+  }
   for (int i = 0; i < array_size; ++i) {
     array[i] = i;
   }
 
   unsigned int *index_array =
       (unsigned int *)malloc(sizeof(unsigned int) * array_size);
-  if (index_array == NULL)
+  if (index_array == NULL) {
+    printf("Error: Memmory alocation of \"index_array\" failed\n");
     exit(1);
+  }
   for (int i = 0; i < array_size; ++i) {
     index_array[i] = i;
   }
@@ -119,13 +132,17 @@ all_MeasuredInfo prime_execution(int num_threads,
   shuffle_array(index_array, array_size);
 
   HANDLE *hThreadArray = (HANDLE *)malloc(num_threads * sizeof(HANDLE));
-  if (hThreadArray == NULL)
+  if (hThreadArray == NULL) {
+    printf("Error: Memmory alocation of \"hThreadArray\" failed\n");
     exit(1);
+  }
 
   PrimeData **pPrimeData =
       (PrimeData **)malloc(sizeof(PrimeData *) * num_threads);
-  if (pPrimeData == NULL)
+  if (pPrimeData == NULL) {
+    printf("Error: Memmory alocation of \"pPrimeData\" failed\n");
     exit(1);
+  }
 
   InitializeCriticalSection(&critical_section);
 
@@ -136,8 +153,10 @@ all_MeasuredInfo prime_execution(int num_threads,
 
   for (int i = 0; i < num_threads; ++i) {
     pPrimeData[i] = (PrimeData *)calloc(1, sizeof(PrimeData));
-    if (pPrimeData[i] == NULL)
+    if (pPrimeData[i] == NULL) {
+      printf("Error: Memmory alocation of \"pPrimeData[i]\" failed\n");
       exit(1);
+    }
 
     int start_index = i * chunk_size;
     int end_index = (i == num_threads - 1) ? array_size : (i + 1) * chunk_size;
@@ -165,8 +184,10 @@ all_MeasuredInfo prime_execution(int num_threads,
   all_info.array_size = num_threads;
   all_info.thread_info_array =
       (MeasuredInfo *)malloc(num_threads * sizeof(MeasuredInfo));
-  if (all_info.thread_info_array == NULL)
+  if (all_info.thread_info_array == NULL) {
+    printf("Error: Memmory alocation of \"all_info.thread_info_array\" failed\n");
     exit(1);
+  }
 
   for (int i = 0; i < num_threads; i++) {
     all_info.thread_info_array[i] = pPrimeData[i]->info;
@@ -185,16 +206,22 @@ all_MeasuredInfo prime_execution(int num_threads,
 
 all_MeasuredInfo matrix_execution(int num_threads,
                                   int measurement_type = CLOCK_MEASUREMENT) {
-  const int m = num_threads, n = 3000 / num_threads, p = 4000;
+  const int m = num_threads, n = 10000 / num_threads, p = 8000;
   unsigned int *matrix_a = (unsigned int *)malloc(m * n * sizeof(unsigned int));
-  if (matrix_a == NULL)
+  if (matrix_a == NULL) {
+    printf("Error: Memmory alocation of \"matrix_a\" failed\n");
     exit(1);
+  }
   unsigned int *matrix_b = (unsigned int *)malloc(n * p * sizeof(unsigned int));
-  if (matrix_b == NULL)
+  if (matrix_b == NULL) {
+    printf("Error: Memmory alocation of \"matrix_b\" failed\n");
     exit(1);
+  }
   unsigned int *matrix_c = (unsigned int *)calloc(m * p, sizeof(unsigned int));
-  if (matrix_c == NULL)
+  if (matrix_c == NULL) {
+    printf("Error: Memmory alocation of \"matrix_c\" failed\n");
     exit(1);
+  }
 
   srand((unsigned)time(NULL));
   generate_random_array(matrix_a, m * n);
@@ -206,21 +233,27 @@ all_MeasuredInfo matrix_execution(int num_threads,
   //  print_matrix(matrix_b, n, p);
 
   HANDLE *hThreadArray = (HANDLE *)malloc(num_threads * sizeof(HANDLE));
-  if (hThreadArray == NULL)
+  if (hThreadArray == NULL) {
+    printf("Error: Memmory alocation of \"hThreadArray\" failed\n");
     exit(1);
+  }
 
   MatrixRowData **pDataArray =
       (MatrixRowData **)malloc(num_threads * sizeof(MatrixRowData *));
-  if (pDataArray == NULL)
+  if (pDataArray == NULL) {
+    printf("Error: Memmory alocation of \"pDataArray\" failed\n");
     exit(1);
+  }
 
   MeasurementState globalState;
   start_timer(measurement_type, &globalState);
 
   for (int i = 0; i < num_threads; i++) {
     pDataArray[i] = (MatrixRowData *)calloc(1, sizeof(MatrixRowData));
-    if (pDataArray[i] == NULL)
+    if (pDataArray[i] == NULL) {
+      printf("Error: Memmory alocation of \"pDataArray[i]\" failed\n");
       exit(1);
+    }
     pDataArray[i]->thread_index = i;
     pDataArray[i]->measurement_type = 1;
     pDataArray[i]->row_index = i;
@@ -246,8 +279,10 @@ all_MeasuredInfo matrix_execution(int num_threads,
   all_info.array_size = num_threads;
   all_info.thread_info_array =
       (MeasuredInfo *)malloc(num_threads * sizeof(MeasuredInfo));
-  if (all_info.thread_info_array == NULL)
+  if (all_info.thread_info_array == NULL) {
+    printf("Error: Memmory alocation of \"all_info.thread_info_array\" failed\n");
     exit(1);
+  }
 
   for (int i = 0; i < num_threads; i++) {
     all_info.thread_info_array[i] = pDataArray[i]->info;
@@ -266,24 +301,30 @@ all_MeasuredInfo matrix_execution(int num_threads,
 
 all_MeasuredInfo mergesort_execution(int num_threads,
                                      int measurement_type = CLOCK_MEASUREMENT) {
-  const int array_size = 1000000;
+  const int array_size = 2000000;
 
   unsigned int *array =
       (unsigned int *)malloc(array_size * sizeof(unsigned int));
-  if (array == NULL)
+  if (array == NULL) {
+    printf("Error: Memmory alocation of \"array\" failed\n");
     exit(1);
+  }
 
   srand((unsigned)time(NULL));
   generate_random_array(array, array_size);
 
   HANDLE *hThreadArray = (HANDLE *)malloc(num_threads * sizeof(HANDLE));
-  if (hThreadArray == NULL)
+  if (hThreadArray == NULL) {
+    printf("Error: Memmory alocation of \"hThreadArray\" failed\n");
     exit(1);
+  }
 
   SortArrayData **pDataArray =
       (SortArrayData **)malloc(num_threads * sizeof(SortArrayData *));
-  if (pDataArray == NULL)
+  if (pDataArray == NULL) {
+    printf("Error: Memmory alocation of \"pDataArray\" failed\n");
     exit(1);
+  }
 
   int *subarray_starts = (int *)malloc(num_threads * sizeof(int));
   int *subarray_ends = (int *)malloc(num_threads * sizeof(int));
@@ -294,8 +335,10 @@ all_MeasuredInfo mergesort_execution(int num_threads,
 
   for (int i = 0; i < num_threads; i++) {
     pDataArray[i] = (SortArrayData *)calloc(1, sizeof(SortArrayData));
-    if (pDataArray[i] == NULL)
+    if (pDataArray[i] == NULL) {
+      printf("Error: Memmory alocation of \"pDataArray[i]\" failed\n");
       exit(1);
+    }
     subarray_starts[i] = i * chunk_size;
     if (i == num_threads - 1) {
       subarray_ends[i] = array_size - 1;
@@ -326,8 +369,10 @@ all_MeasuredInfo mergesort_execution(int num_threads,
   all_info.array_size = num_threads;
   all_info.thread_info_array =
       (MeasuredInfo *)malloc(num_threads * sizeof(MeasuredInfo));
-  if (all_info.thread_info_array == NULL)
+  if (all_info.thread_info_array == NULL) {
+    printf("Error: Memmory alocation of \"all_info.thread_info_array\" failed\n");
     exit(1);
+  }
 
   for (int i = 0; i < num_threads; i++) {
     all_info.thread_info_array[i] = pDataArray[i]->info;
@@ -350,8 +395,10 @@ all_MeasuredInfo start_execution(execution_type type, int num_threads,
   all_MeasuredInfo total_sum;
   MeasuredInfo *total_sum_array =
       (MeasuredInfo *)malloc(num_threads * sizeof(MeasuredInfo));
-  if (!total_sum_array)
+  if (!total_sum_array) {
+    printf("Error: Memmory alocation of \"total_sum_array\" failed\n");
     exit(1);
+  }
   total_sum.array_size = num_threads;
   total_sum.thread_info_array = total_sum_array;
   total_sum.global_info.elapsed_cycles = 0;
@@ -397,19 +444,3 @@ all_MeasuredInfo start_execution(execution_type type, int num_threads,
 
   return total_sum;
 }
-
-// int main() {
-//   int num_iterations = 10;
-//   int num_threads = 8;
-//
-//   all_MeasuredInfo total_sum =
-//       start_execution(PRIME, num_threads, num_iterations, CLOCK_MEASUREMENT);
-//
-//   if (total_sum.array_size > 0) {
-//     printf("\nAverage after %d iterations:\n\n", num_iterations);
-//     print_all_info(total_sum);
-//     free(total_sum.thread_info_array);
-//   }
-//
-//   return 0;
-// }

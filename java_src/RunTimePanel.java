@@ -107,20 +107,12 @@ public class RunTimePanel extends JPanel {
                 proc.waitFor();
             } catch (IOException | InterruptedException e) {
                 this.appendLine("Error: " + e.getMessage());
-                e.printStackTrace(); // For better debugging
+                e.printStackTrace();
             }
             finally {
                 jcomp2.setVisible(true);
             }
         }).start();
     }
-    public static void main(String[] args) {
-        RunTimePanel panel = new RunTimePanel();
-        JFrame frame = new JFrame("MyPanel");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(panel);
-        frame.pack();
-        frame.setVisible(true);
-
-    }
+  
 }

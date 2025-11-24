@@ -31,10 +31,12 @@ void merge(unsigned int a[], int left, int mid, int right) {
 
   unsigned int *L = (unsigned int *)malloc(n1 * sizeof(unsigned int));
   if (L == NULL) {
+    printf("Error: Memmory alocation of \"L\" failed\n");
     exit(1);
   }
   unsigned int *R = (unsigned int *)malloc(n2 * sizeof(unsigned int));
   if (R == NULL) {
+    printf("Error: Memmory alocation of \"R\" failed\n");
     free(L);
     exit(1);
   }
@@ -78,8 +80,10 @@ void merge_sorted_subarrays(unsigned int a[], int subarray_starts[],
   int total_size = subarray_ends[num_parts - 1] - subarray_starts[0] + 1;
   unsigned int *result =
       (unsigned int *)malloc(total_size * sizeof(unsigned int));
-  if (result == NULL)
+  if (result == NULL) {
+    printf("Error: Memmory alocation of \"result\" failed\n");
     exit(1);
+  }
 
   for (int k = 0; k < total_size; k++) {
     int min_part = -1;
@@ -130,8 +134,10 @@ void matrix(int m, int n, int p) {
   unsigned int *matrix_b = (unsigned int *)malloc(n * p * sizeof(unsigned int));
   unsigned int *matrix_c = (unsigned int *)calloc(m * p, sizeof(unsigned int));
 
-  if (matrix_a == NULL || matrix_b == NULL || matrix_c == NULL)
+  if (matrix_a == NULL || matrix_b == NULL || matrix_c == NULL) {
+    printf("Error: Memmory alocation of \"matrix_a, matrix_b, or matrix_c\" failed\n");
     exit(1);
+  }
 
   generate_random_array(matrix_a, m * n, 10);
   generate_random_array(matrix_b, n * p, 10);
